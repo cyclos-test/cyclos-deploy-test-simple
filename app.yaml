@@ -7,6 +7,4 @@ services:
     registry: cyclos
     repository: cyclos
     tag: latest
-  http_port: 8080
-  instance_count: 1
   instance_size_slug: basic-2
