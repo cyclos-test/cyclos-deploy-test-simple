@@ -1,25 +1,33 @@
-name: cyclos-test
+name: cyclos-simple
 region: ams
-
 services:
-  - name: cyclos
-    image: docker.io/cyclos/cyclos:latest
-    http_port: 8080
-    instance_count: 1           # single container
-    instance_size: standard-1x  # 2GB RAM, 1 vCPU
+  - name: cyclos-app
+    image: cyclos/cyclos:latest
+    instance_count: 1
+    instance_size_slug: basic-2  # 2GB RAM, 1 vCPU
+    run_command: >
+      sh -c "export DB_HOST=$DB_HOST &&
+             export DB_NAME=$DB_NAME &&
+             export DB_USER=$DB_USER &&
+             export DB_PASSWORD=$DB_PASSWORD &&
+             /start-cyclos.sh"
     envs:
       - key: DB_HOST
-        value: "${DB_HOST}"
+        scope: RUN_AND_BUILD_TIME
+        value: ""
       - key: DB_NAME
+        scope: RUN_AND_BUILD_TIME
         value: cyclos
       - key: DB_USER
+        scope: RUN_AND_BUILD_TIME
         value: cyclos
       - key: DB_PASSWORD
-        type: secret
-        value: ""               # user enters password
-
+        scope: RUN_AND_BUILD_TIME
+        value: ""
 databases:
   - name: cyclos-db
-    engine: postgresql
+    engine: PG
     version: "15"
-    plan: starter              # minimal DB for testing
+    cluster_size: db-s-1vcpu-1gb
+    region: ams
+    auto_backups: true
