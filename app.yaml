@@ -1,12 +1,12 @@
 name: cyclos-simple
 region: ams
 services:
-  - name: cyclos-service
-    image:
-      registry_type: DOCKER_HUB
-      registry: cyclos
-      repository: cyclos
-      tag: latest
-    http_port: 8080
-    instance_count: 1
-    instance_size_slug: basic-2
+- name: cyclos-service
+  image:
+    registry_type: DOCKER_HUB
+    registry: cyclos
+    repository: cyclos
+    tag: latest
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: basic-2
