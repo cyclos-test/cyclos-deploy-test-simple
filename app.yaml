@@ -1,33 +1,12 @@
 name: cyclos-simple
 region: ams
 services:
-  - name: cyclos-app
-    image: cyclos/cyclos:latest
+  - name: cyclos-service
+    image:
+      registry_type: DOCKER_HUB
+      registry: cyclos
+      repository: cyclos
+      tag: latest
+    http_port: 8080
     instance_count: 1
-    instance_size_slug: basic-2  # 2GB RAM, 1 vCPU
-    run_command: >
-      sh -c "export DB_HOST=$DB_HOST &&
-             export DB_NAME=$DB_NAME &&
-             export DB_USER=$DB_USER &&
-             export DB_PASSWORD=$DB_PASSWORD &&
-             /start-cyclos.sh"
-    envs:
-      - key: DB_HOST
-        scope: RUN_AND_BUILD_TIME
-        value: ""
-      - key: DB_NAME
-        scope: RUN_AND_BUILD_TIME
-        value: cyclos
-      - key: DB_USER
-        scope: RUN_AND_BUILD_TIME
-        value: cyclos
-      - key: DB_PASSWORD
-        scope: RUN_AND_BUILD_TIME
-        value: ""
-databases:
-  - name: cyclos-db
-    engine: PG
-    version: "15"
-    cluster_size: db-s-1vcpu-1gb
-    region: ams
-    auto_backups: true
+    instance_size_slug: basic-2
