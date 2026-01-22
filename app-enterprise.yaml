@@ -1,0 +1,32 @@
+name: cyclos-enterprise
+region: ams   # default region
+
+services:
+  - name: cyclos
+    image: docker.io/cyclos/cyclos:latest
+    http_port: 8080
+    instance_count: 2           # start with 2 containers
+    instance_size: standard-4x  # 8GB RAM, 2 vCPU
+    auto_scale:
+      min: 2
+      max: 4
+      metric: cpu_utilization
+      threshold: 70             # scale if CPU > 70%
+    envs:
+      - key: DB_HOST
+        value: "${DB_HOST}"     # connected automatically to managed DB
+      - key: DB_NAME
+        value: cyclos
+      - key: DB_USER
+        value: cyclos
+      - key: DB_PASSWORD
+        type: secret
+        value: ""               # user enters password during deploy
+
+databases:
+  - name: cyclos-db
+    engine: postgresql
+    version: "15"
+    plan: professional         # HA database
+    high_availability: true
+    size: 8GB                  # persistent storage
